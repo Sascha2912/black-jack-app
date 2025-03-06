@@ -7,15 +7,42 @@
     <link rel="stylesheet" href="./src/css/style.css">
 </head>
 <body>
-    
-    <h1>Blackjack</h1>
-    <p id="message-el">Want to play a round?</p>
-    <p id="cards-el">Cards:</p>
-    <p id="sum-el">Sum:</p>
-    <button onclick="startGame()">START GAME</button>
-    <button onclick="newCard()">NEW CARD</button>
-    <p id="player-el"></p>
-    
+    <div class="container">
+        <img src="src/assets/img/blackjack_logo.png" alt="">
+        
+        <div id="start-area">
+            <p class="message" id="message-el">Want to play a round?</p>
+            <button onclick="startGame()">START GAME</button>
+        </div>
+
+        <div id="setting-area">
+            <label class="message" for="player-name">Pls enter your name:</label>
+            <input id="player-name" type="text">
+            <span class="error-el"></span>
+            <button onclick="initPlayer()">ENTER</button>
+        </div>
+        
+        <div id="play-area">
+            <p id="dealer-el">Dealer:</p>
+            <p id="cards-el">Your cards:</p>
+            <button onclick="newCard()">NEW CARD</button>
+            <button onclick="hold()">HOLD</button>
+            <p id="sum-el">Sum:</p>
+            <p class="player-el"></p>
+        </div>
+        <div id="bet-area"> 
+            <label for="chash-input">YOUR BET</label>
+            <input id="chash-input" type="number">
+            <button onclick="setBet()">SET</button>
+        </div> 
+
+        <div id="choose-area">
+            <p class="player-el"></p>
+            <button onclick="newRound()">NEW ROUND</button>
+            <button onclick="chashOut()">$CHASH OUT$</button>
+        </div>
+    </div>
+
     <script src="./src/js/index.js"></script>
 </body>
 </html> 

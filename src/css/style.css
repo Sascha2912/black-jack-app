@@ -1,20 +1,30 @@
 body{
     
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-image: url("../assets/img/table.png");
-    background-size: cover;
     font-weight: bold;
     color: whitesmoke;
     text-align: center;
+    font-size: 1.5rem;
+}
+
+.container{
+    max-width: 800px;
+    margin: auto;
+    padding: 44px;
+    background-image: url("../assets/img/table.png");
+    background-size: cover;
+    border-radius: 4px;
 }
 
 h1 {
+    margin-top: 0px;
     color: goldenrod;
+    font-size: 3rem;
 }
 
 button {
     color: #016f32;
-    width: 150px;
+    width: 300px;
     background-color: goldenrod;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -23,10 +33,57 @@ button {
     border-radius: 2px;
     display: block;
     margin: auto;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+}
+button:hover{
+    background-color: gold;
 }
 
-#message-el{
+label{
+    margin-top: 24px;
+}
+
+input {
+    color: #016f32;
+    width: 300px;
+    background-color: goldenrod;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    border: none;
+    border-radius: 2px;
+    display: block;
+    margin: auto;
+    margin-top: 4px;
+    font-size: 1.5rem;
+    outline: none;
+    text-align: center;
+}
+
+input:focus{
+    outline: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.message{
+    margin-top: 0px;
     font-style: italic;
+}
+
+#setting-area, #play-area, #bet-area, #choose-area {
+    display: none;
+}
+
+.error-el{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: darkred;
+    font-size: 1.25rem;
 }
