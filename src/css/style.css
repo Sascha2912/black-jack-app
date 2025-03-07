@@ -37,6 +37,7 @@ button {
     margin-bottom: 24px;
     font-size: 1.5rem;
 }
+
 button:hover{
     background-color: gold;
 }
@@ -60,6 +61,10 @@ input {
     font-size: 1.5rem;
     outline: none;
     text-align: center;
+}
+
+input:hover{
+    background-color: gold;
 }
 
 input:focus{

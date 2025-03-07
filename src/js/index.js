@@ -4,6 +4,7 @@
 const messageEl = document.getElementById("message-el");
 const sumEL = document.getElementById("sum-el");
 const cardsEl = document.getElementById("cards-el");
+const dealerEl = document.getElementById("dealer-el");
 const playerEl = document.querySelector(".player-el");
 const errorEl = document.querySelector(".error-el");
 const startArea = document.getElementById("start-area");
@@ -15,25 +16,18 @@ const playerName = document.getElementById("player-name");
 const chashInput = document.getElementById("chash-input");
 
 // Declare variables
-let cards, sum, hasBlackJack, isAlive, message;
+let playerCards = [];
+let dealerCards = [];
+let sum = 0;
+let dealerHand = 0;
+let hasBlackJack = false;
+let isAlive = false;
+let message="";
 
 const player = {
     name: "",
     chips: 10,
 };
-
-const initPlayer = function(){
-    errorEl.textContent = "";
-    let validateInput = playerName.value;
-    if(validateInput.trim() !== ""){
-        player.name = validateInput;
-        playerEl.textContent = player.name + ": $" + player.chips;
-        renderGame();
-    }else{
-        errorEl.textContent = "Pls enter your name."
-    }
-    
-}
 
 const getRandomCard = function(){
 
@@ -48,50 +42,102 @@ const getRandomCard = function(){
     
 };
 
-const startGame = function(){
-    startArea.style.display = "none";
-    settingtArea.style.display = "block";
-    sum = 0;
-    hasBlackJack = false;
+const hold = function(){
     isAlive = false;
-    message="";
-    isAlive = true;
+    checkState();
+}
+
+const checkState = function(){
+    if(isAlive){
+        if( sum <= 20){
+            message ="Do you want to draw a new card?";
+        }else if( sum === 21){
+            message = "Wohoo! You've got Blackjack!";
+            hasBlackJack = true;
+        }else{
+            message ="You're out of the game!";
+            isAlive = false;
+        };
+    
+        
+    }else{
+        dealerEl.textContent = "Dealer: ";
+        for(let i = 0; i < dealerCards.length; i++){
+            dealerEl.textContent += dealerCards[i] + " ";
+        }
+
+        if(dealerHand < 22){
+            sum > dealerHand ? message = "YOU WON!" : message = "YOU LOST!";
+        }else if(sum === dealerHand){
+            message = "DRAW!";
+        }else{
+            message = "YOU WON!"; 
+        }
+        
+    }
+    messageEl.textContent = message;
+};
+
+const renderBoard = function(){
+    dealerEl.textContent = "Dealer: " + dealerCards[0] + " ?";
+    
+    playArea.style.display = "block";
+    cardsEl.textContent = "Your cards: ";
+    for(let i = 0; i < playerCards.length; i++){
+        cardsEl.textContent += playerCards[i] + " ";
+    }
+    sumEL.textContent = "Sum: " + sum;
+};
+
+const getStartHands = function(){
     let firstCard = getRandomCard();
     let secondCard = getRandomCard();
-    cards = [firstCard, secondCard];
+    playerCards = [firstCard, secondCard];
     sum = firstCard + secondCard;
-    cardsEl.textContent = "Cards: ";
+
+    let dealerFirstCard = 0;
+    let dealerSecoundCard = 0;
+    
+    do{
+        dealerFirstCard = getRandomCard();
+        dealerSecoundCard = getRandomCard();
+        dealerHand = dealerFirstCard + dealerSecoundCard;
+    }while(dealerHand < 16);
+    dealerCards = [dealerFirstCard, dealerSecoundCard];
+};
+
+const startGame = function(){
+    errorEl.textContent = "";
+    let validateInput = playerName.value;
+    if(validateInput.trim() !== ""){
+        player.name = validateInput;
+        playerEl.textContent = player.name + ": $" + player.chips;
+        startArea.style.display = "none";
+    }else{
+        errorEl.textContent = "Pls enter your name."
+        return;
+    }
+    renderGame();
 };
 
 const renderGame = function(){
-    settingtArea.style.display = "none";
-    playArea.style.display = "block";
-    cardsEl.textContent = "Your cards: ";
-    for(let i = 0; i < cards.length; i++){
-        cardsEl.textContent += cards[i] + " ";
-    }
+    isAlive = true;
+    
+    getStartHands();
+    
+    renderBoard();
 
-    sumEL.textContent = "Sum: " + sum;
-    if( sum <= 20){
-        message ="Do you want to draw a new card?";
-    }else if( sum === 21){
-        message = "Wohoo! You've got Blackjack!";
-        hasBlackJack = true;
-    }else{
-        message ="You're out of the game!";
-        isAlive = false;
-    };
-
-    messageEl.textContent = message;
+    checkState();
 };
 
 const newCard = function(){
     if(isAlive === true && hasBlackJack === false){
         let newCard = getRandomCard();
         sum += newCard;
-        cards.push(newCard);
+        playerCards.push(newCard);
     
-        renderGame();
+        renderBoard();
+        checkState();
     }
     return;
 };

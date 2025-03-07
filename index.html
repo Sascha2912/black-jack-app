@@ -11,18 +11,15 @@
         <img src="src/assets/img/blackjack_logo.png" alt="">
         
         <div id="start-area">
-            <p class="message" id="message-el">Want to play a round?</p>
-            <button onclick="startGame()">START GAME</button>
-        </div>
-
-        <div id="setting-area">
+            <p class="message">Want to play a round?</p>
             <label class="message" for="player-name">Pls enter your name:</label>
             <input id="player-name" type="text">
             <span class="error-el"></span>
-            <button onclick="initPlayer()">ENTER</button>
+            <button onclick="startGame()">START GAME</button>
         </div>
-        
+
         <div id="play-area">
+            <p class="message" id="message-el"></p>
             <p id="dealer-el">Dealer:</p>
             <p id="cards-el">Your cards:</p>
             <button onclick="newCard()">NEW CARD</button>
