@@ -153,3 +153,8 @@ const newCard = function(){
     }
     return;
 };
+
+const chashOut = function(){
+    boardEl.style.display = "none";
+    messageEl.textContent = "You won " + player.chips + "$"
+};
