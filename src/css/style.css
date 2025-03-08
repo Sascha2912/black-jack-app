@@ -82,7 +82,7 @@ input[type="number"]::-webkit-inner-spin-button {
     font-style: italic;
 }
 
-#setting-area, #play-area, #bet-area, #choose-area {
+#board-el, #play-area, #bet-area, #choose-area {
     display: none;
 }
 
