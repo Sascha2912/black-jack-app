@@ -74,7 +74,7 @@ const checkState = function(){
         
     }else{
         
-        if(sum === dealerHand){
+        if(sum === dealerHand || (dealerHand > 21 && sum > 21)){
             message = "DRAW! you got " + bet + "$";
             player.chips += bet;
         }else if(dealerHand < 22){
