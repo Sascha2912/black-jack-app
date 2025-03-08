@@ -18,8 +18,16 @@
             <button onclick="startGame()">START GAME</button>
         </div>
 
+        <div id="bet-area"> 
+            <label for="chash-input">YOUR BET:</label>
+            <input id="chash-input" type="number">
+            <span class="error-el" id="bet-error-el"></span>
+            <button onclick="setBet()">SET</button>
+        </div> 
+
         <div id="board-el">
             <p id="dealer-el">Dealer:</p>
+            <p id="bet-el"></p>
             <p id="cards-el">Your cards:</p>
             <div id="play-area">
                 <button onclick="newCard()">NEW CARD</button>
@@ -27,18 +35,13 @@
             </div>
 
             <div id="choose-area">
-                <button onclick="renderGame()">NEW ROUND</button>
+                <button onclick="newRound()">NEW ROUND</button>
                 <button onclick="chashOut()">$CHASH OUT$</button>
             </div>
             
             <p id="sum-el">Sum:</p>
-            <p class="player-el"></p>
         </div>
-        <div id="bet-area"> 
-            <label for="chash-input">YOUR BET</label>
-            <input id="chash-input" type="number">
-            <button onclick="setBet()">SET</button>
-        </div> 
+        <p class="player-el"></p>
     </div>
 
     <script src="./src/js/index.js"></script>

@@ -5,8 +5,10 @@ const messageEl = document.getElementById("message-el");
 const sumEL = document.getElementById("sum-el");
 const cardsEl = document.getElementById("cards-el");
 const dealerEl = document.getElementById("dealer-el");
+const betEl = document.getElementById("bet-el");
 const playerEl = document.querySelector(".player-el");
 const errorEl = document.querySelector(".error-el");
+const betErrorEl = document.getElementById("bet-error-el");
 const startArea = document.getElementById("start-area");
 const boardEl = document.getElementById("board-el");
 const playArea = document.getElementById("play-area");
@@ -19,6 +21,7 @@ const chashInput = document.getElementById("chash-input");
 let playerCards = [];
 let dealerCards = [];
 let sum = 0;
+let bet = 0;
 let dealerHand = 0;
 let isAlive = false;
 let message="";
@@ -58,7 +61,8 @@ const checkState = function(){
         if( sum <= 20){
             message ="Do you want to draw a new card?";
         }else if( sum === 21){
-            message = "Wohoo! You've got Blackjack!";
+            message = "Wohoo! You've got Blackjack! You won " + ( bet * 3 + bet) + "$";
+            player.chips += bet * 3 + bet;
             showdealerHand();
             playArea.style.display = "none";
             chooseArea.style.display = "block";
@@ -71,17 +75,35 @@ const checkState = function(){
     }else{
         
         if(sum === dealerHand){
-            message = "DRAW!";
+            message = "DRAW! you got " + bet + "$";
+            player.chips += bet;
         }else if(dealerHand < 22){
-            sum > dealerHand && sum < 22 ? message = "YOU WON!" : message = "YOU LOST!";
+            if(sum > dealerHand && sum < 22){
+                message = "YOU WON! " + (bet + bet) + "$";
+                player.chips += (bet + bet);
+            }else{
+                message = "YOU LOST!";
+            }
         }else{
-            message = "YOU WON!"; 
+            message = "YOU WON! " + (bet + bet) + "$";
+            player.chips += (bet + bet); 
         }
         showdealerHand();
-        playArea.style.display = "none";
-        chooseArea.style.display = "block";
+        if(player.chips <= 0){
+            boardEl.style.display = "none";
+            playerEl.style.display = "none";
+            messageEl.style.color = "darkred";
+            messageEl.style.marginTop = "120px";
+            messageEl.textContent = "YOU ARE OUT!";
+            return;
+        }else{
+            playArea.style.display = "none";
+            chooseArea.style.display = "block";
+        }
     }
+
     messageEl.textContent = message;
+    playerEl.textContent = player.name + ": $" + player.chips;
 };
 
 const renderBoard = function(){
@@ -121,11 +143,34 @@ const startGame = function(){
         player.name = validateInput;
         playerEl.textContent = player.name + ": $" + player.chips;
         startArea.style.display = "none";
+        newRound();
     }else{
         errorEl.textContent = "Pls enter your name."
         return;
     }
+};
+
+const setBet = function(){
+    betErrorEl.textContent = "";
+    let validateInput = parseInt(chashInput.value);
+    if(validateInput > 0 && validateInput <= player.chips){
+        bet = validateInput;
+        chashInput.value = "";
+        player.chips -= bet;
+        playerEl.textContent = player.name + ": $" + player.chips;
+        betEl.textContent = "BET: " + bet + "$";
+        betArea.style.display = "none";
+    }else{
+        betErrorEl.textContent = "Pls enter a value between 1 and " + player.chips; 
+        return;
+    }
+
     renderGame();
+};
+
+const newRound = function(){
+    boardEl.style.display = "none";
+    betArea.style.display = "block";
 };
 
 const renderGame = function(){
@@ -156,5 +201,6 @@ const newCard = function(){
 
 const chashOut = function(){
     boardEl.style.display = "none";
+    playerEl.style.display = "none";
     messageEl.textContent = "You won " + player.chips + "$"
 };
