@@ -10,20 +10,27 @@
     <div class="container">
         <img src="src/assets/img/blackjack_logo.png" alt="">
         
+        <p id="message-el" class="message">Want to play a round?</p>
         <div id="start-area">
-            <p class="message">Want to play a round?</p>
             <label class="message" for="player-name">Pls enter your name:</label>
             <input id="player-name" type="text">
             <span class="error-el"></span>
             <button onclick="startGame()">START GAME</button>
         </div>
 
-        <div id="play-area">
-            <p class="message" id="message-el"></p>
+        <div id="board-el">
             <p id="dealer-el">Dealer:</p>
             <p id="cards-el">Your cards:</p>
-            <button onclick="newCard()">NEW CARD</button>
-            <button onclick="hold()">HOLD</button>
+            <div id="play-area">
+                <button onclick="newCard()">NEW CARD</button>
+                <button onclick="hold()">HOLD</button>
+            </div>
+
+            <div id="choose-area">
+                <button onclick="renderGame()">NEW ROUND</button>
+                <button onclick="chashOut()">$CHASH OUT$</button>
+            </div>
+            
             <p id="sum-el">Sum:</p>
             <p class="player-el"></p>
         </div>
@@ -32,12 +39,6 @@
             <input id="chash-input" type="number">
             <button onclick="setBet()">SET</button>
         </div> 
-
-        <div id="choose-area">
-            <p class="player-el"></p>
-            <button onclick="newRound()">NEW ROUND</button>
-            <button onclick="chashOut()">$CHASH OUT$</button>
-        </div>
     </div>
 
     <script src="./src/js/index.js"></script>

@@ -8,7 +8,7 @@ const dealerEl = document.getElementById("dealer-el");
 const playerEl = document.querySelector(".player-el");
 const errorEl = document.querySelector(".error-el");
 const startArea = document.getElementById("start-area");
-const settingtArea = document.getElementById("setting-area");
+const boardEl = document.getElementById("board-el");
 const playArea = document.getElementById("play-area");
 const betArea = document.getElementById("bet-area");
 const chooseArea = document.getElementById("choose-area");
@@ -20,7 +20,6 @@ let playerCards = [];
 let dealerCards = [];
 let sum = 0;
 let dealerHand = 0;
-let hasBlackJack = false;
 let isAlive = false;
 let message="";
 
@@ -45,7 +44,14 @@ const getRandomCard = function(){
 const hold = function(){
     isAlive = false;
     checkState();
-}
+};
+
+const showdealerHand = function(){
+    dealerEl.textContent = "Dealer: ";
+        for(let i = 0; i < dealerCards.length; i++){
+            dealerEl.textContent += dealerCards[i] + " ";
+        }
+};
 
 const checkState = function(){
     if(isAlive){
@@ -53,35 +59,37 @@ const checkState = function(){
             message ="Do you want to draw a new card?";
         }else if( sum === 21){
             message = "Wohoo! You've got Blackjack!";
-            hasBlackJack = true;
+            showdealerHand();
+            playArea.style.display = "none";
+            chooseArea.style.display = "block";
         }else{
             message ="You're out of the game!";
             isAlive = false;
+            showdealerHand();
         };
-    
         
     }else{
-        dealerEl.textContent = "Dealer: ";
-        for(let i = 0; i < dealerCards.length; i++){
-            dealerEl.textContent += dealerCards[i] + " ";
-        }
-
-        if(dealerHand < 22){
-            sum > dealerHand ? message = "YOU WON!" : message = "YOU LOST!";
-        }else if(sum === dealerHand){
+        
+        if(sum === dealerHand){
             message = "DRAW!";
+        }else if(dealerHand < 22){
+            sum > dealerHand && sum < 22 ? message = "YOU WON!" : message = "YOU LOST!";
         }else{
             message = "YOU WON!"; 
         }
-        
+        showdealerHand();
+        playArea.style.display = "none";
+        chooseArea.style.display = "block";
     }
     messageEl.textContent = message;
 };
 
 const renderBoard = function(){
+    boardEl.style.display = "block";
+    playArea.style.display = "block";
+    chooseArea.style.display = "none";
     dealerEl.textContent = "Dealer: " + dealerCards[0] + " ?";
     
-    playArea.style.display = "block";
     cardsEl.textContent = "Your cards: ";
     for(let i = 0; i < playerCards.length; i++){
         cardsEl.textContent += playerCards[i] + " ";
@@ -131,10 +139,14 @@ const renderGame = function(){
 };
 
 const newCard = function(){
-    if(isAlive === true && hasBlackJack === false){
+    if(isAlive === true){
         let newCard = getRandomCard();
         sum += newCard;
         playerCards.push(newCard);
+
+        if(sum > 21){
+            isAlive = false;
+        }
     
         renderBoard();
         checkState();
