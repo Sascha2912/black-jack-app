@@ -8,42 +8,48 @@
 </head>
 <body>
     <div class="container">
-        <img src="src/assets/img/blackjack_logo.png" alt="">
+        <header>
+            <h1>
+                <img src="src/assets/img/blackjack_logo.png" alt="Blackjack Logo">
+            </h1>
+        </header>
         
-        <p id="message-element" class="message">Want to play a round?</p>
-        <div id="start-area">
-            <label class="message" for="player-name-input">Pls enter your name:</label>
-            <input id="player-name-input" type="text">
-            <span class="error-element" id="name-error"></span>
-            <button id="btn-start-game">START GAME</button>
-        </div>
-
-        <div id="bet-area"> 
-            <label for="cash-input">YOUR BET:</label>
-            <input id="cash-input" type="number">
-            <span class="error-element" id="bet-error"></span>
-            <button id="btn-set-bet">SET</button>
-        </div> 
-
-        <div id="board-element">
-            <p id="dealer-element">Dealer:</p>
-            <p id="bet-element"></p>
-            <p id="cards-element">Your cards:</p>
-            <div id="play-area">
-                <button id="btn-draw-card">NEW CARD</button>
-                <button id="btn-hold">HOLD</button>
+        <main>
+            <p id="message-element" class="message">Want to play a round?</p>
+            <div id="start-area">
+                <label class="message" for="player-name-input">Pls enter your name:</label>
+                <input id="player-name-input" type="text">
+                <span class="error-element" id="name-error"></span>
+                <button id="btn-start-game">START GAME</button>
             </div>
-
-            <div id="choose-area">
-                <button id="btn-new-round">NEW ROUND</button>
-                <button id="btn-cash-out">$CASH OUT$</button>
+    
+            <div id="bet-area"> 
+                <label for="cash-input">YOUR BET:</label>
+                <input id="cash-input" type="number">
+                <span class="error-element" id="bet-error"></span>
+                <button id="btn-set-bet">SET</button>
+            </div> 
+    
+            <div id="board-element">
+                <p id="dealer-element">Dealer:</p>
+                <p id="bet-element"></p>
+                <p id="cards-element">Your cards:</p>
+                <div id="play-area">
+                    <button id="btn-draw-card">NEW CARD</button>
+                    <button id="btn-hold">HOLD</button>
+                </div>
+    
+                <div id="choose-area">
+                    <button id="btn-new-round">NEW ROUND</button>
+                    <button id="btn-cash-out">$CASH OUT$</button>
+                </div>
+                
+                <p id="sum-element">Sum:</p>
             </div>
-            
-            <p id="sum-element">Sum:</p>
-        </div>
-        <p class="player-element"></p>
-    </div>
-
+            <p class="player-element"></p>
+            </div>
+        </main>
+        
     <script src="./src/js/index.js"></script>
 </body>
 </html> 
