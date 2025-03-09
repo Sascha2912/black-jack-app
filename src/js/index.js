@@ -1,206 +1,249 @@
 'use strict';
 
-// Get DOM-Elements
-const messageEl = document.getElementById("message-el");
-const sumEL = document.getElementById("sum-el");
-const cardsEl = document.getElementById("cards-el");
-const dealerEl = document.getElementById("dealer-el");
-const betEl = document.getElementById("bet-el");
-const playerEl = document.querySelector(".player-el");
-const errorEl = document.querySelector(".error-el");
-const betErrorEl = document.getElementById("bet-error-el");
-const startArea = document.getElementById("start-area");
-const boardEl = document.getElementById("board-el");
-const playArea = document.getElementById("play-area");
-const betArea = document.getElementById("bet-area");
-const chooseArea = document.getElementById("choose-area");
-const playerName = document.getElementById("player-name");
-const chashInput = document.getElementById("chash-input");
+// === DOM-Elemente ===
+const messageElement = document.getElementById("message-element");
+const sumELement = document.getElementById("sum-element");
+const cardsElement = document.getElementById("cards-element");
+const dealerElement = document.getElementById("dealer-element");
+const betElement = document.getElementById("bet-element");
+const playerElement = document.querySelector(".player-element");
+const boardElement = document.getElementById("board-element");
+// === Spiel-Abschnitte ===
+const startAreaElement = document.getElementById("start-area");
+const chooseAreaElement = document.getElementById("choose-area");
+const playAreaElement = document.getElementById("play-area");
+const betAreaElement = document.getElementById("bet-area");
+// === Input-Elemente ===
+const playerNameInput = document.getElementById("player-name-input");
+const cashInput = document.getElementById("cash-input");
+// === Error-Elemente ===
+const nameErrorElement = document.getElementById("name-error");
+const betErrorElement = document.getElementById("bet-error");
 
-// Declare variables
+// === Button-Elemente ===
+const btnStartGame = document.getElementById('btn-start-game');
+const btnSetBet = document.getElementById('btn-set-bet');
+const btnDrawCard = document.getElementById('btn-draw-card');
+const btnHold = document.getElementById('btn-hold');
+const btnNewRound = document.getElementById('btn-new-round');
+const btnCashOut = document.getElementById('btn-cash-out');
+
+// == Spielvariablen ===
 let playerCards = [];
 let dealerCards = [];
-let sum = 0;
-let bet = 0;
-let dealerHand = 0;
-let isAlive = false;
-let message="";
+let playerSum = 0;
+let currentBet = 0;
+let dealerSum = 0;
+let isGameActive = false;
+let currentMessage="";
 
 const player = {
     name: "",
     chips: 10,
 };
 
-const getRandomCard = function(){
+// === Funktionen ===
 
-    let randomNumber = Math.floor( Math.random() * 13 ) + 1;
-    if(randomNumber === 1){
-        return 11;
-    }else if(randomNumber > 10){
-        return 10;
-    }else{
-        return randomNumber;
-    }
-    
+/**
+ * Gibt ene zufällige Karte zurück zwischen 2 und 11.
+ * Bei einem Ass wird 11 zurückgegeben, bei Bildkarten 10.
+ */
+const getRandomCard = () => {
+    const randomNumber = Math.floor( Math.random() * 13 ) + 1;
+    if (randomNumber === 1) return 11;
+    if (randomNumber > 10) return 10;
+    return randomNumber; 
 };
 
-const hold = function(){
-    isAlive = false;
-    checkState();
-};
-
-const showdealerHand = function(){
-    dealerEl.textContent = "Dealer: ";
-        for(let i = 0; i < dealerCards.length; i++){
-            dealerEl.textContent += dealerCards[i] + " ";
-        }
-};
-
-const checkState = function(){
-    if(isAlive){
-        if( sum <= 20){
-            message ="Do you want to draw a new card?";
-        }else if( sum === 21){
-            message = "Wohoo! You've got Blackjack! You won " + ( bet * 3 + bet) + "$";
-            player.chips += bet * 3 + bet;
-            showdealerHand();
-            playArea.style.display = "none";
-            chooseArea.style.display = "block";
-        }else{
-            message ="You're out of the game!";
-            isAlive = false;
-            showdealerHand();
-        };
-        
-    }else{
-        
-        if(sum === dealerHand || (dealerHand > 21 && sum > 21)){
-            message = "DRAW! you got " + bet + "$";
-            player.chips += bet;
-        }else if(dealerHand < 22){
-            if(sum > dealerHand && sum < 22){
-                message = "YOU WON! " + (bet + bet) + "$";
-                player.chips += (bet + bet);
-            }else{
-                message = "YOU LOST!";
+/**
+ * Bewertet den Spielstand und aktualisiert die Anzeige.
+ */
+const evaluateGameState = () => {
+    // Wenn das Spiel aktiv ist (Spieler zieht Karten)
+    if (isGameActive) {
+        if ( playerSum <= 20) {
+            currentMessage ="Do you want to draw a new card?";
+        } else if ( playerSum === 21) {
+            currentMessage = `Wohoo! You've got Blackjack! You won ${currentBet * 4}$`;
+            player.chips += currentBet * 4;
+            displayDealerHand();
+            playAreaElement.style.display = 'none';
+            chooseAreaElement.style.display = 'block';
+        } else {
+            currentMessage ="You're out of the game!";
+            isGameActive = false;
+            displayDealerHand();
+        };  
+    } else {
+        // Spielende: Vergleich von Spieler und Dealer
+        if (playerSum === dealerSum || (dealerSum > 21 && playerSum > 21)) {
+            currentMessage = `DRAW! you got ${currentBet}$ back.`;
+            player.chips += currentCurrentBet;
+        } else if (dealerSum < 22) {
+            if (playerSum > dealerSum && playerSum < 22) {
+                currentMessage = `YOU WON! You earend ${currentBet * 2}$`;
+                player.chips += currentBet * 2;
+            } else {
+                currentMessage = "YOU LOST!";
             }
-        }else{
-            message = "YOU WON! " + (bet + bet) + "$";
-            player.chips += (bet + bet); 
+        } else {
+            currentMessage = `YOU WON! You earned ${currentBet * 2}$`;
+            player.chips += currentBet * 2; 
         }
-        showdealerHand();
-        if(player.chips <= 0){
-            boardEl.style.display = "none";
-            playerEl.style.display = "none";
-            messageEl.style.color = "darkred";
-            messageEl.style.marginTop = "120px";
-            messageEl.textContent = "YOU ARE OUT!";
+        displayDealerHand();
+        if (player.chips <= 0) {
+            boardElement.style.display = 'none';
+            playerElement.style.display = 'none';
+            messageElement.style.color = 'darkred';
+            messageElement.style.marginTop = '120px';
+            messageElement.textContent = "YOU ARE OUT!";
             return;
-        }else{
-            playArea.style.display = "none";
-            chooseArea.style.display = "block";
+        } else {
+            playAreaElement.style.display = 'none';
+            chooseAreaElement.style.display = 'block';
         }
     }
 
-    messageEl.textContent = message;
-    playerEl.textContent = player.name + ": $" + player.chips;
+    messageElement.textContent = currentMessage;
+    playerElement.textContent = `${player.name}: $${player.chips}`;
 };
 
-const renderBoard = function(){
-    boardEl.style.display = "block";
-    playArea.style.display = "block";
-    chooseArea.style.display = "none";
-    dealerEl.textContent = "Dealer: " + dealerCards[0] + " ?";
+/**
+ * Zeigt die Hand des Dealers an.
+ */
+const displayDealerHand = () => {
+    dealerElement.textContent = "Dealer: ";
+        dealerCards.forEach(card => {
+            dealerElement.textContent += `${card} `;
+        });
+};
+
+/**
+ * Aktualisiet das Spielfeld (Spielerhand, Summe etc.) 
+ */
+const updateGameBoard = () => {
+    boardElement.style.display = 'block';
+    playAreaElement.style.display = 'block';
+    chooseAreaElement.style.display = 'none';
     
-    cardsEl.textContent = "Your cards: ";
-    for(let i = 0; i < playerCards.length; i++){
-        cardsEl.textContent += playerCards[i] + " ";
+    // Zeige erste Karte des Dealers und Platzhalter.
+    dealerElement.textContent = `Dealer: ${dealerCards[0]} ?`;
+    
+    // Spielerhand anzeigen
+    cardsElement.textContent = "Your cards: ";
+    playerCards.forEach(card => {
+        cardsElement.textContent += `${card} `
+    });
+    sumELement.textContent = `Sum: ${playerSum}`;
+};
+
+
+/**
+ * Teilt die Anfangshände aus.
+ * Für Dealer wird solange neu gezogen, bis die Summe mindestens 17 beträgt
+ */
+const dealInitialHands = () => {
+    const firstPlayerCard = getRandomCard();
+    const secondPlayerCard = getRandomCard();
+    playerCards = [firstPlayerCard, secondPlayerCard];
+    playerSum = firstPlayerCard + secondPlayerCard;
+
+    let firstDealerCard, secoundDealerCard;
+    
+    do {
+        firstDealerCard = getRandomCard();
+        secoundDealerCard = getRandomCard();
+        dealerSum = firstDealerCard + secoundDealerCard;
+    } while (dealerSum < 17);
+    dealerCards = [firstDealerCard, secoundDealerCard];
+};
+
+ /**
+  *  Startet das Spiel, nach dem der Spieler seinen Namen eingegeben hat.
+  */
+const gameStarted = () => {
+    nameErrorElement.textContent = "";
+    const playerName = playerNameInput.value;
+    if (playerName.trim() !== "") {
+        player.name = playerName;
+        playerElement.textContent = `${player.name}: $${player.chips}`;
+        startAreaElement.style.display = 'none';
+        roundStarted();
+    } else {
+        nameErrorElement.textContent = "Pls enter your name."
     }
-    sumEL.textContent = "Sum: " + sum;
 };
 
-const getStartHands = function(){
-    let firstCard = getRandomCard();
-    let secondCard = getRandomCard();
-    playerCards = [firstCard, secondCard];
-    sum = firstCard + secondCard;
-
-    let dealerFirstCard = 0;
-    let dealerSecoundCard = 0;
-    
-    do{
-        dealerFirstCard = getRandomCard();
-        dealerSecoundCard = getRandomCard();
-        dealerHand = dealerFirstCard + dealerSecoundCard;
-    }while(dealerHand < 16);
-    dealerCards = [dealerFirstCard, dealerSecoundCard];
+/**
+ *  Setzt den Einsatz des Spielers.
+ */
+const setBet = () => {
+    betErrorElement.textContent = "";
+    const betValue = parseInt(cashInput.value);
+    if (betValue > 0 && betValue <= player.chips) {
+        currentBet = betValue;
+        cashInput.value = "";
+        player.chips -= currentBet;
+        playerElement.textContent = `${player.name}: $${player.chips}`;
+        betElement.textContent = `BET: ${currentBet}$`;
+        betAreaElement.style.display = 'none';
+        renderGame();
+    } else {
+        betErrorElement.textContent = `Pls enter a value between 1 and ${player.chips}`;
+    }  
 };
 
-const startGame = function(){
-    errorEl.textContent = "";
-    let validateInput = playerName.value;
-    if(validateInput.trim() !== ""){
-        player.name = validateInput;
-        playerEl.textContent = player.name + ": $" + player.chips;
-        startArea.style.display = "none";
-        newRound();
-    }else{
-        errorEl.textContent = "Pls enter your name."
-        return;
+/**
+ * Startet eine neue Runde, indem der Wetteinsatzbereich angezeigt wird.
+ */
+const roundStarted = () => {
+    boardElement.style.display = 'none';
+    betAreaElement.style.display = 'block';
+};
+
+/**
+ * Rendert das Spiel: teilt Karten aus, aktualisiert das Board und prüft den Spielstand.
+ */
+const renderGame = () => {
+    isGameActive = true;
+    dealInitialHands();
+    updateGameBoard();
+    evaluateGameState();
+};
+
+/**
+ * Fügt dem Spieler eine neue Karte hinzu.
+ */
+const cardDrawn = () => {
+    if (isGameActive) {
+        const drawnCard = getRandomCard();
+        playerSum += drawnCard;
+        playerCards.push(drawnCard);
+
+        if (playerSum > 21) isGameActive = false;
+        updateGameBoard();
+        evaluateGameState();
     }
 };
 
-const setBet = function(){
-    betErrorEl.textContent = "";
-    let validateInput = parseInt(chashInput.value);
-    if(validateInput > 0 && validateInput <= player.chips){
-        bet = validateInput;
-        chashInput.value = "";
-        player.chips -= bet;
-        playerEl.textContent = player.name + ": $" + player.chips;
-        betEl.textContent = "BET: " + bet + "$";
-        betArea.style.display = "none";
-    }else{
-        betErrorEl.textContent = "Pls enter a value between 1 and " + player.chips; 
-        return;
-    }
-
-    renderGame();
+/**
+ * Beendet die Runde und übergibt das Spiel an den Dealer.
+ */
+const holdGame = () => {
+    isGameActive = false;
+    evaluateGameState();
 };
 
-const newRound = function(){
-    boardEl.style.display = "none";
-    betArea.style.display = "block";
+const cashOut = () => {
+    boardElement.style.display = 'none';
+    playerElement.style.display = 'none';
+    messageElement.textContent = `You won $${player.chips}`;
 };
 
-const renderGame = function(){
-    isAlive = true;
-    
-    getStartHands();
-    
-    renderBoard();
-
-    checkState();
-};
-
-const newCard = function(){
-    if(isAlive === true){
-        let newCard = getRandomCard();
-        sum += newCard;
-        playerCards.push(newCard);
-
-        if(sum > 21){
-            isAlive = false;
-        }
-    
-        renderBoard();
-        checkState();
-    }
-    return;
-};
-
-const chashOut = function(){
-    boardEl.style.display = "none";
-    playerEl.style.display = "none";
-    messageEl.textContent = "You won " + player.chips + "$"
-};
+// === Event-Bindings ===
+btnStartGame.addEventListener('click', gameStarted);
+btnSetBet.addEventListener('click', setBet);
+btnDrawCard.addEventListener('click', cardDrawn);
+btnHold.addEventListener('click', holdGame);
+btnNewRound.addEventListener('click', roundStarted);
+btnCashOut.addEventListener('click', cashOut);

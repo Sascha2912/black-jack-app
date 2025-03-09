@@ -3,45 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Jack 12</title>
+    <title>Blackjack Portfolio Game</title>
     <link rel="stylesheet" href="./src/css/style.css">
 </head>
 <body>
     <div class="container">
         <img src="src/assets/img/blackjack_logo.png" alt="">
         
-        <p id="message-el" class="message">Want to play a round?</p>
+        <p id="message-element" class="message">Want to play a round?</p>
         <div id="start-area">
-            <label class="message" for="player-name">Pls enter your name:</label>
-            <input id="player-name" type="text">
-            <span class="error-el"></span>
-            <button onclick="startGame()">START GAME</button>
+            <label class="message" for="player-name-input">Pls enter your name:</label>
+            <input id="player-name-input" type="text">
+            <span class="error-element" id="name-error"></span>
+            <button id="btn-start-game">START GAME</button>
         </div>
 
         <div id="bet-area"> 
-            <label for="chash-input">YOUR BET:</label>
-            <input id="chash-input" type="number">
-            <span class="error-el" id="bet-error-el"></span>
-            <button onclick="setBet()">SET</button>
+            <label for="cash-input">YOUR BET:</label>
+            <input id="cash-input" type="number">
+            <span class="error-element" id="bet-error"></span>
+            <button id="btn-set-bet">SET</button>
         </div> 
 
-        <div id="board-el">
-            <p id="dealer-el">Dealer:</p>
-            <p id="bet-el"></p>
-            <p id="cards-el">Your cards:</p>
+        <div id="board-element">
+            <p id="dealer-element">Dealer:</p>
+            <p id="bet-element"></p>
+            <p id="cards-element">Your cards:</p>
             <div id="play-area">
-                <button onclick="newCard()">NEW CARD</button>
-                <button onclick="hold()">HOLD</button>
+                <button id="btn-draw-card">NEW CARD</button>
+                <button id="btn-hold">HOLD</button>
             </div>
 
             <div id="choose-area">
-                <button onclick="newRound()">NEW ROUND</button>
-                <button onclick="chashOut()">$CHASH OUT$</button>
+                <button id="btn-new-round">NEW ROUND</button>
+                <button id="btn-cash-out">$CASH OUT$</button>
             </div>
             
-            <p id="sum-el">Sum:</p>
+            <p id="sum-element">Sum:</p>
         </div>
-        <p class="player-el"></p>
+        <p class="player-element"></p>
     </div>
 
     <script src="./src/js/index.js"></script>
