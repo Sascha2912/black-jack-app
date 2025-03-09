@@ -1,8 +1,16 @@
+:root{
+    --primary-color: goldenrod;
+    --hover-color: gold;
+    --text-color: whitesmoke;
+    --error-color: darkred;
+    --button-text-color: #016f32;
+}
+
 body{
     
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: bold;
-    color: whitesmoke;
+    color: var(--text-color);
     text-align: center;
     font-size: 1.5rem;
 }
@@ -24,9 +32,9 @@ h1 {
 }
 
 button {
-    color: #016f32;
+    color: var(--button-text-color);
     width: 300px;
-    background-color: goldenrod;
+    background-color: var(--primary-color);
     padding-top: 5px;
     padding-bottom: 5px;
     font-weight: bold;
@@ -39,8 +47,8 @@ button {
     font-size: 1.5rem;
 }
 
-button:hover{
-    background-color: gold;
+button:hover, input:hover{
+    background-color: var(--hover-color);
 }
 
 label{
@@ -48,9 +56,9 @@ label{
 }
 
 input {
-    color: #016f32;
+    color: var(--button-text-color);
     width: 300px;
-    background-color: goldenrod;
+    background-color: var(--primary-color);
     padding-top: 5px;
     padding-bottom: 5px;
     font-weight: bold;
@@ -64,8 +72,8 @@ input {
     text-align: center;
 }
 
-input:hover{
-    background-color: gold;
+{
+    background-color: var(--hover-color);
 }
 
 input:focus{
@@ -90,10 +98,10 @@ input[type="number"]::-webkit-inner-spin-button {
 .error-el{
     margin-top: 0px;
     margin-bottom: 0px;
-    color: darkred;
+    color: var(--error-color);
     font-size: 1.25rem;
 }
 
 #bet-el{
-   color: goldenrod; 
+   color: var(--primary-color); 
 }
